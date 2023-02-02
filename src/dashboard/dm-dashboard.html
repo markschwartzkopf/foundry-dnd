@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>DM Dashboard</title>
+		<link rel="shortcut icon" href="#" />
+		<style>
+			body,
+			html {
+				box-sizing: border-box;
+				height: auto;
+				margin: 0;
+			}
+			#dm-images {
+				width: 100%;
+				/* background-color: blue; */
+				display: flex;
+				flex-wrap: wrap;
+			}
+			img {
+				margin: 0.5em;
+			}
+			#show-img {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				background-color: #000000cc;
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="dm-images"></div>
+	</body>
+	<script src="dm-dashboard.js"></script>
+</html>
