@@ -53,6 +53,7 @@ playerRep2.on('change', (newVal) => {
 battlePlayerRep.on('change', (newVal) => {
 	if (newVal) {
 		combatDiv.innerHTML = '';
+		combatDiv.style.opacity = newVal.length ? '1' : '0';
 		for (let i = 0; i < newVal.length; i++) {
 			const player = newVal[i];
 			if (player) {
@@ -64,6 +65,7 @@ battlePlayerRep.on('change', (newVal) => {
 
 battleNPCRep.on('change', (newVal) => {
 	if (newVal) {
+    npcsDiv.style.opacity = newVal.length ? '1' : '0';
 		npcsDiv.innerHTML = '';
 		for (let i = 0; i < newVal.length; i++) {
 			const player = newVal[i];
@@ -173,6 +175,7 @@ function modifyPlayer(
 	initDiv.appendChild(b);
 	const initInput = document.createElement('input');
 	initInput.type = 'number';
+	initInput.inputMode = 'numeric';
 	initInput.style.width = '3em';
 	if (player.initiative !== null)
 		initInput.value = player.initiative.toString();
@@ -189,7 +192,7 @@ function modifyPlayer(
 		if (ev.key === 'Enter') editModal.style.display = 'none';
 	};
 	initInput.oninput = () => {
-		const val = parseInt(initInput.value);
+		const val = parseFloat(initInput.value);
 		if (!isNaN(val)) {
 			if (kind === 'combat') {
 				NodeCG.waitForReplicants(battlePlayerRep)
@@ -234,7 +237,8 @@ function modifyPlayer(
 		b.innerHTML = 'Hit Points:';
 		hpDiv.appendChild(b);
 		const hpInput = document.createElement('input');
-		hpInput.type = 'number';
+		hpInput.type = 'tel';
+		hpInput.pattern = '[0-9]*';
 		hpInput.style.width = '3em';
 		hpInput.value = player.currentHitPoints.toString();
 		hpInput.onkeydown = (ev) => {
