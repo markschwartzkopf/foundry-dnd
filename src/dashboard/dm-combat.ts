@@ -65,7 +65,7 @@ battlePlayerRep.on('change', (newVal) => {
 
 battleNPCRep.on('change', (newVal) => {
 	if (newVal) {
-    npcsDiv.style.opacity = newVal.length ? '1' : '0';
+		npcsDiv.style.opacity = newVal.length ? '1' : '0';
 		npcsDiv.innerHTML = '';
 		for (let i = 0; i < newVal.length; i++) {
 			const player = newVal[i];
@@ -232,12 +232,12 @@ function modifyPlayer(
 	editWindow.appendChild(initDiv);
 	if (player.type === 'npc') {
 		const hpDiv = document.createElement('div');
-		const b = document.createElement('b');
+		let b = document.createElement('b');
 		b.className = 'red-text';
 		b.innerHTML = 'Hit Points:';
 		hpDiv.appendChild(b);
 		const hpInput = document.createElement('input');
-		hpInput.type = 'tel';
+		hpInput.type = 'number';
 		hpInput.pattern = '[0-9]*';
 		hpInput.style.width = '3em';
 		hpInput.value = player.currentHitPoints.toString();
@@ -273,6 +273,32 @@ function modifyPlayer(
 		textSpan.innerHTML = `/${player.maxHitPoints}`;
 		hpDiv.appendChild(textSpan);
 		editWindow.appendChild(hpDiv);
+
+		const nameDiv = document.createElement('div');
+		b = document.createElement('b');
+		b.className = 'red-text';
+		b.innerHTML = 'Name:';
+		nameDiv.appendChild(b);
+		const nameInput = document.createElement('input');
+		nameInput.style.width = '10em';
+		nameInput.value = player.name ? player.name : '';
+    nameInput.onkeydown = (ev) => {
+			if (ev.key === 'Enter') editModal.style.display = 'none';
+		};
+		nameInput.oninput = () => {
+			const rep = kind === 'combat' ? battlePlayerRep : battleNPCRep;
+			NodeCG.waitForReplicants(rep)
+				.then(() => {
+					if (rep.value) {
+						(rep.value[index] as BattleNPC).name = nameInput.value;
+					}
+				})
+				.catch((err) => {
+					nodecg.log.error(err);
+				});
+		};
+		nameDiv.appendChild(nameInput);
+		editWindow.appendChild(nameDiv);
 	}
 	editModal.style.display = 'flex';
 }
