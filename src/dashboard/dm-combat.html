@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>DM Combat Dashboard</title>
+		<link rel="shortcut icon" href="#" />
+		<style>
+			body,
+			html {
+				box-sizing: border-box;
+				height: auto;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
+			#main-page {
+				width: 100%;
+				height: 100%;
+				display: flex;
+			}
+			#main-page > div {
+				flex-grow: 1;
+				flex-basis: 0;
+				margin: 2em;
+				color: black;
+			}
+			.modal {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: #000000cc;
+				display: none;
+				align-items: center;
+				justify-content: center;
+			}
+			.centered-column {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+			}
+			.red-text {
+				color: #822000;
+			}
+			.monster-name {
+				color: #822000;
+				font-family: Garamond, serif;
+				text-shadow: 0 0 1px #000;
+				font-size: 2.5em;
+				font-weight: bold;
+				font-variant: small-caps;
+			}
+			.stats-div {
+				display: flex;
+				color: #822000;
+			}
+			.stats-div > div {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				margin: 0 0.5em;
+			}
+			.player {
+				display: flex;
+				align-items: stretch;
+				height: 3rem;
+			}
+			.player + .player {
+				border-top: 2px solid #822000;
+			}
+			.player > div {
+				line-height: 3rem;
+			}
+			.control-icon {
+				width: 3rem;
+				font-size: 2em;
+				text-align: center;
+				flex-grow: 0;
+				cursor: default;
+			}
+			.player-label {
+				padding: 0 1em;
+				flex-grow: 1;
+			}
+			hr {
+				height: 3px;
+				background-color: #822000;
+				border: 0;
+			}
+			#monster-window {
+				padding: 0.5em;
+				font-size: 15px;
+				font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+					sans-serif;
+				margin: 10em;
+			}
+			#monster-window > div {
+				break-inside: avoid-column;
+			}
+			.paper {
+				background-color: #f8f3d7;
+				color: black;
+				box-shadow: 0 0 5px #979aa4;
+				border: 1px solid #d4d0ce;
+			}
+			#combat-players,
+			#pcs,
+			#npcs {
+				height: min-content;
+				width: 100%;
+			}
+			#staging {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: space-between;
+			}
+			#add {
+				background-color: black;
+				border: 2px solid white;
+				color: white;
+				line-height: 3rem;
+				padding: 0 1rem 0 0.35rem;
+				width: max-content;
+				cursor: default;
+			}
+			.user-action {
+				display: flex;
+				justify-content: space-around;
+				width: 100%;
+			}
+			.user-action-icon {
+				font-size: 4rem;
+				cursor: default;
+			}
+			.monster-option {
+				margin: 0.2em;
+				color: #822000;
+				cursor: default;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="edit-modal" class="modal">
+			<div id="edit-window" style="padding: 1em;" class="paper"></div>
+		</div>
+		<div id="monster-modal" class="modal">
+			<div id="monster-window" style="column-count: 2" class="paper">
+				Adding monster data...
+			</div>
+		</div>
+		<div id="monster-selector" class="modal">
+			<div
+				id="monster-selector-window"
+				style="width: 16em; padding: 1em"
+				class="centered-column paper"
+			>
+				<div class="centered-column">
+					Min Challenge Rating: <br />
+					<div>
+						<input type="range" min="0" max="30" value="0" id="min-challenge" />
+						<span id="min-challenge-num">0</span>
+					</div>
+				</div>
+				<div class="centered-column">
+					Max Challenge Rating:<br />
+					<div>
+						<input
+							type="range"
+							min="0"
+							max="30"
+							value="30"
+							id="max-challenge"
+						/>
+						<span id="max-challenge-num">30</span>
+					</div>
+				</div>
+				<div class="centered-column">
+					Search Term:<br />
+					<input id="search" />
+				</div>
+				<div
+					id="monster-select"
+					style="
+						width: 14em;
+						margin-top: 1em;
+						max-height: 16em;
+						overflow: auto;
+						border: 2px solid black;
+					"
+				>
+					<div></div>
+				</div>
+			</div>
+			<div id="ms-preview"></div>
+		</div>
+		<div id="main-page">
+			<div id="combat-players" class="paper"></div>
+			<div id="staging">
+				<div id="pcs" class="paper"></div>
+				<div id="npcs" class="paper"></div>
+				<div id="add">
+					<span style="font-size: 2rem; position: relative; top: 2px"
+						>&#65291;</span
+					>
+					Add NPC
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="dm-combat.js"></script>
+</html>

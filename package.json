@@ -13,14 +13,20 @@
 			{
 				"name": "player-setup",
 				"title": "Player Setup",
-				"width": 3,
+				"fullbleed": true,
 				"file": "player-setup.html"
 			},
 			{
-				"name": "dm-dashboard",
-				"title": "DM Dashboard",
+				"name": "secret-dm-images",
+				"title": "Secret DM Image Dashboard",
 				"fullbleed": true,
-				"file": "dm-dashboard.html"
+				"file": "dm-images.html"
+			},
+      {
+				"name": "secret-dm-combat",
+				"title": "Secret DM Combat Dashboard",
+				"fullbleed": true,
+				"file": "dm-combat.html"
 			}
 		],
 		"graphics": [
@@ -46,7 +52,9 @@
 				"title": "DM images",
 				"allowedTypes": [
 					"png",
-					"jpg"
+					"jpg",
+          "jpeg",
+          "jfif"
 				]
 			}
 		]
@@ -63,7 +71,8 @@
 		"build:dashboard": "node ./node_modules/typescript/bin/tsc -p ./src/dashboard --diagnostics",
 		"build:graphics": "node ./node_modules/typescript/bin/tsc -p ./src/graphics --diagnostics",
 		"build:copyhtml": "cpy \"src/**/*.html\" \"./\" --parents",
-		"build:copycss": "cpy \"src/**/*.css\" \"./\" --parents"
+		"build:copycss": "cpy \"src/**/*.css\" \"./\" --parents",
+    "build:copyjson": "cpy \"src/**/*.json\" \"./\" --parents"
 	},
 	"author": "Mark Schwartzkopf",
 	"license": "MIT",

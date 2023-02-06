@@ -178,6 +178,8 @@ nodecg.listenFor('pullPC', (args: { index: number; id: number }) => {
 				playerRep.value[args.index] = {
 					realName: '',
 					character: dataToCharacter(data),
+					type: 'pc',
+					initiative: null,
 				};
 		})
 		.catch(console.error);
@@ -190,11 +192,18 @@ setInterval(() => {
 		getCharacter(playerRep.value[i]!.character!.id.toString())
 			.then((data) => {
 				if (playerRep.value[i]) {
-					playerRep.value[i]!.character = dataToCharacter(data);
+					const newCharacter = dataToCharacter(data);
+					if (
+						JSON.stringify(newCharacter) !==
+						JSON.stringify(playerRep.value[i]!.character)
+					)
+						playerRep.value[i]!.character = dataToCharacter(data);
 				} else
 					playerRep.value[i] = {
 						realName: '',
 						character: dataToCharacter(data),
+						type: 'pc',
+						initiative: null,
 					};
 			})
 			.catch((err) => {

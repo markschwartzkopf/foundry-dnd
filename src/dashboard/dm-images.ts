@@ -20,6 +20,7 @@ logosRep.on('change', (newVal) => {
 			const asset = newVal[i];
 			const img = document.createElement('img');
 			img.style.minHeight = '25vh';
+      img.style.maxHeight = '25vh';
 			img.src = asset.url;
 			img.onclick = () => {
 				shownImageRep.value = asset.url;

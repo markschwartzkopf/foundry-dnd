@@ -28,7 +28,12 @@ function divFrom(player: Player | null, i: number) {
 			NodeCG.waitForReplicants(playerRep)
 				.then(() => {
 					if (playerRep.value)
-						playerRep.value[i] = { realName: '', character: null };
+						playerRep.value[i] = {
+							realName: '',
+							character: null,
+							type: 'pc',
+							initiative: null,
+						};
 				})
 				.catch((err) => {
 					nodecg.log.error(err);
@@ -46,12 +51,13 @@ function divFrom(player: Player | null, i: number) {
 					.then(() => {
 						if (playerRep.value) {
 							if (playerRep.value[i]) {
-								console.log('hey');
 								playerRep.value[i]!.realName = nameInput.value;
 							} else
 								playerRep.value[i] = {
 									realName: nameInput.value,
 									character: null,
+									type: 'pc',
+									initiative: null,
 								};
 						}
 					})
