@@ -269,9 +269,7 @@ function modifyPlayer(
 			}
 		};
 		hpDiv.appendChild(hpInput);
-		const textSpan = document.createElement('span');
-		textSpan.innerHTML = `/${player.maxHitPoints}`;
-		hpDiv.appendChild(textSpan);
+		hpDiv.appendChild(document.createTextNode(`/${player.maxHitPoints}`));
 		editWindow.appendChild(hpDiv);
 
 		const nameDiv = document.createElement('div');
@@ -282,7 +280,7 @@ function modifyPlayer(
 		const nameInput = document.createElement('input');
 		nameInput.style.width = '10em';
 		nameInput.value = player.name ? player.name : '';
-    nameInput.onkeydown = (ev) => {
+		nameInput.onkeydown = (ev) => {
 			if (ev.key === 'Enter') editModal.style.display = 'none';
 		};
 		nameInput.oninput = () => {
