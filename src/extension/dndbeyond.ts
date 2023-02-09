@@ -185,6 +185,10 @@ nodecg.listenFor('pullPC', (args: { index: number; id: number }) => {
 		.catch(console.error);
 });
 
+nodecg.listenFor('getNPCdata', (id: number, ack) => {
+	console.log('getNPC');
+});
+
 let playerUpdateIndex = 0;
 setInterval(() => {
 	const i = playerUpdateIndex;

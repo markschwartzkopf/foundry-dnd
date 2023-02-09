@@ -3,6 +3,7 @@
 const playerRepC = nodecg.Replicant<Players>('players');
 const shownImageRep3 = nodecg.Replicant<string | null>('show-image');
 const dmImg2 = document.getElementById('dm-img') as HTMLDivElement;
+const dmRef = document.getElementById('dm-ref') as HTMLDivElement;
 
 shownImageRep3.on('change', (newVal) => {
 	if (newVal) {
@@ -73,7 +74,6 @@ function healthToTransform2(num: number) {
 }
 
 function healthToColor2(num: number) {
-	console.log(num);
 	if (num > 0.7) return '#006000';
 	if (num > 0.25) return '#AA9900';
 	return '#990000';
