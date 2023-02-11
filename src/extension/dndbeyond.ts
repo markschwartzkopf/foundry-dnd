@@ -186,8 +186,21 @@ nodecg.listenFor('pullPC', (args: { index: number; id: number }) => {
     });
 });
 
-nodecg.listenFor('getNPCdata', (id: number, ack) => {
-  console.log('getNPC');
+nodecg.listenFor('getNPCdata', (id: string, ack) => {
+  getCharacter(id)
+    .then((data) => {
+      return dataToCharacter(data);
+    })
+    .then((character) => {
+      if (ack && !ack.handled) {
+        ack(null, character);
+      } else nodecg.log.warn(`Can't ack 'getNPCdata' request`);
+    })
+    .catch((err) => {
+      if (ack && !ack.handled) {
+        ack(err);
+      } else nodecg.log.error(err);
+    });
 });
 
 let playerUpdateIndex = 0;
