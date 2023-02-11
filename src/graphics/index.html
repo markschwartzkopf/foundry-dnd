@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Overlay</title>
+    <link rel="shortcut icon" href="#" />
+    <style>
+      :root {
+        --border-shade: #333333;
+        --border: #666666;
+        --player-border: 10px;
+        --portait-size: 100px;
+        --hp-bar-width: 15px;
+        --hp-shade-opacity: 1;
+        --hp-border-width: 5px;
+        --good-health: #006000;
+        --mid-health: #aa9900;
+        --low-health: #990000;
+      }
+      body,
+      html {
+        overflow: hidden;
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        width: 1920px;
+        height: 1080px;
+        position: relative;
+      }
+      #players {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        display: flex;
+        height: 368px;
+      }
+      #dm {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 940px;
+        height: 674px;
+      }
+      #flex,
+      #flex-cover {
+        position: absolute;
+        right: 0px;
+        bottom: 0px;
+        width: 940px;
+        height: 674px;
+      }
+      #flex-cover {
+        background-size: 500px;
+        background-position: 50% 50%;
+        background-repeat: no-repeat;
+        background-image: url('foundry-logo.svg');
+        border: 10px solid var(--border);
+        background-color: var(--border);
+        opacity: 1;
+      }
+      .normal-border {
+        border: 10px solid var(--border);
+        outline: 2px solid var(--border);
+        flex: 1 1 auto;
+        position: relative;
+      }
+      .normal-border::before {
+        position: absolute;
+        border: 1px solid var(--border-shade);
+        content: '';
+        left: -1px;
+        right: -1px;
+        top: -1px;
+        bottom: -1px;
+      }
+      .player-frame {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        width: 0;
+        border-width: 10px var(--player-border);
+      }
+      .player-frame:first-child {
+        border-left-width: 10px;
+      }
+      .player-frame:last-child {
+        border-right-width: 10px;
+      }
+      .hp-container {
+        width: 100%;
+        display: flex;
+        flex-grow: 1;
+      }
+      .portrait-container {
+        display: flex;
+        width: 100%;
+        flex-grow: 0;
+      }
+      .hp {
+        position: relative;
+        background-color: black;
+        flex-grow: 0;
+        width: var(--hp-bar-width);
+        border: var(--hp-border-width) solid var(--border);
+        border-top-width: 5px;
+        margin: -5px;
+      }
+      .hp::before {
+        position: absolute;
+        border: 1px solid var(--border-shade);
+        content: '';
+        left: -1px;
+        right: -1px;
+        top: -1px;
+        bottom: -1px;
+        display: block;
+        opacity: var(--hp-shade-opacity);
+      }
+      .hp::after {
+        position: absolute;
+        border-right: 1px solid var(--border-shade);
+        content: '';
+        left: calc(-1px - var(--hp-border-width));
+        right: calc(-1px - var(--hp-border-width));
+        top: 0px;
+        bottom: 0px;
+        display: block;
+      }
+      .hp:last-child::after {
+        border-right: unset;
+        border-left: 1px solid var(--border-shade);
+      }
+      .portrait {
+        position: relative;
+        background-color: black;
+        flex-grow: 0;
+        width: var(--portait-size);
+        height: var(--portait-size);
+        border: 5px solid var(--border);
+        margin-left: -5px;
+        margin-bottom: -5px;
+        margin-top: 1px;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+      .portrait:last-child {
+        margin-left: 0px;
+        margin-right: -5px;
+      }
+      .portrait::before {
+        position: absolute;
+        border: 1px solid var(--border-shade);
+        content: '';
+        left: -1px;
+        right: -1px;
+        top: -1px;
+        bottom: -1px;
+        display: block;
+      }
+      .portrait::after {
+        position: absolute;
+        border: 1px solid var(--border-shade);
+        content: '';
+        left: -6px;
+        right: -6px;
+        top: -6px;
+        bottom: -6px;
+        display: block;
+        background-color: green;
+        z-index: -1;
+      }
+      .spacer {
+        flex-grow: 1;
+      }
+      #player-names {
+        position: absolute;
+        left: 0px;
+        top: 360px;
+        width: 100%;
+        display: flex;
+        background-color: var(--border);
+        font-size: 30px;
+        font-weight: bold;
+        font-family: Garamond, serif;
+        z-index: 1;
+      }
+      .player-name {
+        width: 0;
+        flex-grow: 1;
+        padding: 0px 0.5em;
+        overflow: hidden;
+      }
+      .player-name:nth-child(even) {
+        text-align: right;
+      }
+      .mercury {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        bottom: 0%;
+        background-color: var(--good-health);
+      }
+      #dm-image {
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        bottom: -1px;
+        right: -1px;
+        background-color: black;
+        opacity: 0;
+        border: 1px solid var(--border-shade);
+      }
+
+      #camera-placeholders {
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        position: absolute;
+        z-index: -1000;
+      }
+      #camera-placeholders > div {
+        position: absolute;
+        z-index: -1000;
+        opacity: 0.5;
+      }
+      #cam-1-2,
+      #cam-3-4,
+      #cam-5-6 {
+        width: 630px;
+        height: 358px;
+        top: 5px;
+      }
+      #cam-1-2 {
+        left: 5px;
+        background-color: red;
+      }
+      #cam-3-4 {
+        left: 645px;
+        background-color: green;
+      }
+      #cam-5-6 {
+        left: 1285px;
+        background-color: blue;
+      }
+      #cam-dm,
+      #cam-flex {
+        width: 950px;
+        height: 702px;
+        bottom: 5px;
+      }
+      #cam-dm {
+        background-color: yellow;
+        left: 5px;
+      }
+      #cam-flex {
+        background-color: cyan;
+        right: 5px;
+      }
+      @keyframes show {
+        0% {
+          opacity: 0;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      @keyframes hide {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="camera-placeholders">
+      <div id="cam-1-2"></div>
+      <div id="cam-3-4"></div>
+      <div id="cam-5-6"></div>
+      <div id="cam-dm"></div>
+      <div id="cam-flex"></div>
+    </div>
+
+    <div id="players">
+      <div class="normal-border player-frame">
+        <div class="hp-container">
+          <div class="hp"><div class="mercury" id="hp-1"></div></div>
+          <div class="spacer"></div>
+          <div class="hp"><div class="mercury" id="hp-2"></div></div>
+        </div>
+        <div class="portrait-container">
+          <div id="player-portrait-1" class="portrait"></div>
+          <div class="spacer"></div>
+          <div id="player-portrait-2" class="portrait"></div>
+        </div>
+      </div>
+      <div class="normal-border player-frame">
+        <div class="hp-container">
+          <div class="hp"><div class="mercury" id="hp-3"></div></div>
+          <div class="spacer"></div>
+          <div class="hp"><div class="mercury" id="hp-4"></div></div>
+        </div>
+        <div class="portrait-container">
+          <div id="player-portrait-3" class="portrait"></div>
+          <div class="spacer"></div>
+          <div id="player-portrait-4" class="portrait"></div>
+        </div>
+      </div>
+      <div class="normal-border player-frame">
+        <div class="hp-container">
+          <div class="hp"><div class="mercury" id="hp-5"></div></div>
+          <div class="spacer"></div>
+          <div class="hp"><div class="mercury" id="hp-6"></div></div>
+        </div>
+        <div class="portrait-container">
+          <div id="player-portrait-5" class="portrait"></div>
+          <div class="spacer"></div>
+          <div id="player-portrait-6" class="portrait"></div>
+        </div>
+      </div>
+    </div>
+    <div id="player-names">
+      <div id="player-name-1" class="player-name"></div>
+      <div id="player-name-2" class="player-name"></div>
+      <div id="player-name-3" class="player-name"></div>
+      <div id="player-name-4" class="player-name"></div>
+      <div id="player-name-5" class="player-name"></div>
+      <div id="player-name-6" class="player-name"></div>
+    </div>
+    <div id="dm" class="normal-border"></div>
+    <div id="flex" class="normal-border">
+      <div id="flex-cover"></div>
+      <div id="dm-image"></div>
+    </div>
+  </body>
+  <script>
+    const exports = {};
+  </script>
+  <script src="index.js"></script>
+</html>

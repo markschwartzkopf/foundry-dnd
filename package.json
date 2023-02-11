@@ -10,6 +10,12 @@
 	"nodecg": {
 		"compatibleRange": "^1.8.1",
 		"dashboardPanels": [
+      {
+				"name": "stream-tech-dash",
+				"title": "Stream Tech Dashboard",
+				"width": 3,
+				"file": "stream-tech-dash.html"
+			},
 			{
 				"name": "player-setup",
 				"title": "Player Setup",
@@ -22,7 +28,7 @@
 				"fullbleed": true,
 				"file": "dm-images.html"
 			},
-      {
+			{
 				"name": "secret-dm-combat",
 				"title": "Secret DM Combat Dashboard",
 				"fullbleed": true,
@@ -30,6 +36,11 @@
 			}
 		],
 		"graphics": [
+      {
+				"file": "index.html",
+				"width": 1920,
+				"height": 1080
+			},
 			{
 				"file": "standard.html",
 				"width": 1920,
@@ -53,14 +64,14 @@
 				"allowedTypes": [
 					"png",
 					"jpg",
-          "jpeg",
-          "jfif"
+					"jpeg",
+					"jfif"
 				]
 			}
 		]
 	},
 	"scripts": {
-		"start:NodeCG": "node ../../index.js",
+		"start:NodeCG": "node ../../index.js --bundlesEnabled foundry-dnd",
 		"watch": "npm-run-all -p watch:*",
 		"watch:extension": "node ./node_modules/typescript/bin/tsc -p ./src/extension --diagnostics --watch",
 		"watch:dashboard": "node ./node_modules/typescript/bin/tsc -p ./src/dashboard --diagnostics --watch",
@@ -72,7 +83,8 @@
 		"build:graphics": "node ./node_modules/typescript/bin/tsc -p ./src/graphics --diagnostics",
 		"build:copyhtml": "cpy \"src/**/*.html\" \"./\" --parents",
 		"build:copycss": "cpy \"src/**/*.css\" \"./\" --parents",
-    "build:copyjson": "cpy \"src/**/*.json\" \"./\" --parents"
+		"build:copyjson": "cpy \"src/**/*.json\" \"./\" --parents",
+    "build:copysvg": "cpy \"src/**/*.svg\" \"./\" --parents"
 	},
 	"author": "Mark Schwartzkopf",
 	"license": "MIT",

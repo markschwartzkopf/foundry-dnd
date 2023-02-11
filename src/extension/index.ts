@@ -26,6 +26,9 @@ module.exports = function (nodecg: NodeCG) {
 	const showHealthRep = nodecg.Replicant<boolean>('showHeath', {
 		defaultValue: false,
 	});
+  const showCombatRep = nodecg.Replicant<boolean>('show-combat', {
+		defaultValue: false,
+	});
 	const shownImageRep = nodecg.Replicant<string | null>('show-image', {
 		defaultValue: null,
 	});
