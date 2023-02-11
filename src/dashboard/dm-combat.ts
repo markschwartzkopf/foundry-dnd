@@ -139,8 +139,30 @@ function playerDiv(
           if (
             battlePlayerRep.value &&
             !containsPlayer(battlePlayerRep.value, player)
-          )
-            battlePlayerRep.value.push(player);
+          ) {
+            NodeCG.waitForReplicants(battlePlayerRep)
+              .then(() => {
+                if (battlePlayerRep.value) {
+                  const sortArr: typeof battlePlayerRep.value = JSON.parse(
+                    JSON.stringify(battlePlayerRep.value)
+                  );
+                  sortArr.push(player);
+                  sortArr.sort((a, b) => {
+                    const aInit = a.initiative !== null ? a.initiative : -1000;
+                    const bInit = b.initiative !== null ? b.initiative : -1000;
+                    return aInit < bInit ? 1 : -1;
+                  });
+                  for (let i = 0; i < sortArr.length; i++) {
+                    if (JSON.stringify(sortArr[i]) === JSON.stringify(player))
+                      index = i;
+                  }
+                  battlePlayerRep.value = sortArr;
+                }
+              })
+              .catch((err) => {
+                nodecg.log.error(err);
+              });
+          }
         })
         .catch((err) => {
           nodecg.log.error(err);
