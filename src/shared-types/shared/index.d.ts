@@ -25,6 +25,7 @@ type Player = {
   realName: string;
   character: Character | null;
   initiative: number | null;
+  isPresent: boolean;
 };
 
 type Players = [

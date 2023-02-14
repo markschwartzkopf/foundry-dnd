@@ -33,6 +33,7 @@ function divFrom(player: Player | null, i: number) {
 							character: null,
 							type: 'pc',
 							initiative: null,
+              isPresent: false
 						};
 				})
 				.catch((err) => {
@@ -58,6 +59,7 @@ function divFrom(player: Player | null, i: number) {
 									character: null,
 									type: 'pc',
 									initiative: null,
+                  isPresent: false
 								};
 						}
 					})
