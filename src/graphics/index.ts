@@ -89,8 +89,10 @@ playerRep.on('change', (newVal, oldVal) => {
 					playerPortraitDivs[i].style.display = 'none';
 				}
         (healthMeters[i].parentNode as HTMLDivElement).style.display = 'block';
+        let currentHitPoints = newVal[i]!.character!.currentHitPoints;
+        if (currentHitPoints < 0) currentHitPoints = 0;
 				const newHealth =
-					newVal[i]!.character!.currentHitPoints /
+					currentHitPoints /
 					newVal[i]!.character!.maxHitPoints;
 				const newColor = healthToColor2(newHealth);
 				if (oldVal && oldVal[i] && oldVal[i]!.character) {
